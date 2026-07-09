@@ -104,7 +104,7 @@ python main.py --config=mappo --env-config=gymma with \
   `--env-config=gymma` the environment wrapper ([`src/config/envs/gymma.yaml`](src/config/envs/gymma.yaml)).
 - Training runs to `t_max = 2 000 000` steps; the model is saved under
   `src/results/models/<name>-...` and can then be pointed to by `flora_run/` for the closed loop.
-- The environment id `LoRaEnv-v1` is registered by `import gym_mdde1` (done in `main.py`); variant ids for the ablation studies (`...-v3/-v4/-v5`) are registered alongside it — see [`src/envs/MADE/gym_mdde1/__init__.py`](src/envs/MADE/gym_mdde1/__init__.py) and the ablation knobs (`ablate`, `assoc_mode`, `opt_mode`, `noise_target`) in [`src/config/envs/gymma.yaml`](src/config/envs/gymma.yaml).
+- The environment id `LoRaEnv-v1` is registered by `import gym_mdde1` (done in `main.py`); variant ids for the ablation studies (`...-v3/-v4`) are registered alongside it — see [`src/envs/MADE/gym_mdde1/__init__.py`](src/envs/MADE/gym_mdde1/__init__.py) and the ablation knobs (`ablate`, `assoc_mode`, `opt_mode`) in [`src/config/envs/gymma.yaml`](src/config/envs/gymma.yaml).
 
 ---
 
@@ -167,6 +167,12 @@ If you use this code, please cite:
 Coming soon...!!!
 ```
 
-## License & acknowledgements
+## Acknowledgements
 
-The Python/MARL code is released under the **Apache License 2.0** (see [`LICENSE`](LICENSE)); it derives from **EPyMARL / PyMARL** — modified files are recorded in [`NOTICE`](NOTICE). The `flora-stack/` simulator overlay extends **FLoRa** (GPL/LGPL) and OMNeT++/INET, which are fetched from their official sources and are not redistributed here.
+This project builds upon and integrates the following open-source frameworks and simulators:
+
+* **EPyMARL / PyMARL:** The underlying Python/MARL code implementation. [https://github.com/uoe-agents/epymarl](https://github.com/uoe-agents/epymarl)
+* **Gym:** Used for environment wrappers and reinforcement learning tracking. [https://gymnasium.farama.org/index.html](https://gymnasium.farama.org/index.html)
+* **OMNeT++:** The core component of the network simulation environment. [https://github.com/omnetpp/omnetpp](https://github.com/omnetpp/omnetpp)
+* **INET Framework:** Provides the foundational network models and protocol stacks. [https://github.com/inet-framework/inet](https://github.com/inet-framework/inet)
+* **FLoRa:** The LoRa network simulator extended by the `flora-stack/` simulator overlay. [https://github.com/florasim/flora](https://github.com/florasim/flora)
