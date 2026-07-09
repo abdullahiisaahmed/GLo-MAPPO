@@ -1,0 +1,39 @@
+env: "gymma"
+
+env_args:
+  key: null
+  time_limit: null                # time limit for each episode 
+  pretrained_wrapper: null
+  num_uavs: null                  # number of UAVs or Agents
+  num_eds: null                   # number of End Devices
+  seed: null                      # random seed for reproducibility
+  max_tp_dbm: null                # maximum transmission power in dBm
+  area_size: null                 # simulation area size
+  uav_altitude: null              # UAV altitude
+  max_episode_steps: null         # maximum number of steps in an episode
+  max_speed: null                 # maximum speed of UAVs
+  comm_range: null                # communication range of UAVs
+  safe_distance: null             # safe distance between UAVs
+  ablate: null                    # (Exp A) reward leave-one-out: full|assoc|ee|collision|cs_dist|cs_fail|coverage|spread
+  assoc_mode: null                # (Exp B) association scheme: gain|distance|random|fixed
+  opt_mode: null                  # (Exp C) optimization param: full|fix_sf|fix_tp|fix_position|fix_all
+  noise_target: null              # (Exp D) localization noise: none|uav_pos|uav_ed_pos
+  obs_noise_std: null             # (Exp D) sigma [m] of Gaussian position noise
+  noise_probability: null         # (Exp D) per-step probability noise is applied (default 1.0)
+  noise_seed: null                # (Exp D) RNG seed for the noise (optional)
+  rate_mode: null                 # (Exp F) data-rate input: snr|sinr (default snr)
+
+  # channel_gain_noise_std: null    # standard deviation of channel gain noise, 
+  # noise_probability: null         # probability of noise occurrence
+
+
+# Training parameters
+Initial values:
+test_greedy: True
+test_nepisode: 100
+test_interval: 50000
+log_interval: 50000
+runner_log_interval: 10000
+learner_log_interval: 10000
+t_max: 2000000 # 2050000
+

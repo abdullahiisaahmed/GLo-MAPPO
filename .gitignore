@@ -1,0 +1,84 @@
+# ===========================================================================
+#  GLo-MAPPO — .gitignore
+# ===========================================================================
+
+# ---- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ---- Virtual environments -------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ---- Training outputs / logs (heavy; not committed) -----------------------
+results/
+results_*/
+src/results/
+Logs/
+logs/
+runs/
+sacred/
+tb_logs/
+tensorboard/
+wandb/
+*.log
+
+# ---- Closed-loop co-simulation runtime outputs ----------------------------
+flora_run/timing_logs/       # per-episode JSON logs (auto-created on first run)
+flora_run/scenario.json      # topology written by env_socket.py at runtime
+flora_run/*.csv              # e.g. cosim_comparison.csv
+
+# ---- Media / captured demo frames -----------------------------------------
+*.mp4
+*.avi
+*.mov
+frames/
+
+# ===========================================================================
+#  FLoRa / OMNeT++ toolchain — fetched & built locally, NEVER committed.
+#  install_flora_stack.sh downloads OMNeT++/INET/FLoRa into flora-stack/.
+# ===========================================================================
+flora-stack/omnetpp-*/
+flora-stack/inet4.4/
+flora-stack/*.tgz
+flora-stack/*.tar.gz
+flora-stack/.flora_overlay_backup/
+
+# OMNeT++ result/build artifacts anywhere
+*.sca
+*.vec
+*.vci
+*.o
+*.d
+out/
+
+# In flora-stack/flora/ we commit ONLY the custom overlay. Ignore everything
+# else that lands there after the FLoRa download + build.
+flora-stack/flora/**
+!flora-stack/flora/
+!flora-stack/flora/src/
+!flora-stack/flora/src/Marl/
+!flora-stack/flora/src/Marl/**
+!flora-stack/flora/src/LoRaPhy/
+!flora-stack/flora/src/LoRaPhy/LoRaPathLossOulu.*
+!flora-stack/flora/simulations/
+!flora-stack/flora/simulations/MarlLoRaNetwork.ned
+!flora-stack/flora/simulations/examples/
+!flora-stack/flora/simulations/examples/*.ini
+
+# ---- OS / editor cruft ----------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
