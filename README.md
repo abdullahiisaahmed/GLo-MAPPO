@@ -1,15 +1,26 @@
-
+<!-- 
 # GLo-MAPPO: Multi-Agent Deep Reinforcement Learning for Energy-Efficient UAV-Assisted LoRa Networks
 
 This repository provides the reference implementation for **GLo-MAPPO**, a framework that utilizes Multi-Agent Proximal Policy Optimization (MAPPO) to optimize network topology and energy efficiency in UAV-assisted LoRa networks. 
 
-The GLo-MAPPO policy coordinates a team of UAV gateways to simultaneously manage three critical tasks:
-1. **Dynamic Trajectory Control:** Flying energy-efficient paths across the target deployment area.
-2. **Device Association:** Optimizing the link connections between ground LoRa End Devices (EDs) and in-range UAV gateways.
-3. **Resource Allocation:** Dynamically setting the Spreading Factor (SF) and Transmission Power (TP) for every served node to maximize global energy efficiency.
+The framework combines a trained **GLo-MAPPO policy** with a deterministic execution module to simultaneously manage three critical tasks:
+
+1. **Dynamic Trajectory Control (Policy-Driven):** The learned policy learns to fly energy-efficient paths across the target deployment area.
+2. **Resource Allocation (Policy-Driven):** The learned policy dynamically sets the Spreading Factor (SF) and Transmission Power (TP) for every associated node to maximize global energy efficiency.
+3. **Device Association:** A channel-aware association scheme maps the link connections between ground LoRa End Devices (EDs) and in-range UAV gateways based on the current channel gains.
+
+
+The system is trained using a custom OpenAI Gym environment and validated via a live, closed-loop co-simulation connected to a packet-level **OMNeT++ / INET / FLoRa** network simulator. -->
+
+# GLo-MAPPO: Multi-Agent Deep Reinforcement Learning for Energy-Efficient UAV-Assisted LoRa Networks
+
+This repository provides the reference implementation for **GLo-MAPPO**, a framework that utilizes Multi-Agent Proximal Policy Optimization (MAPPO) to optimize network topology and energy efficiency in UAV-assisted LoRa networks. The framework combines a trained **GLo-MAPPO policy** with a deterministic execution module to simultaneously manage three critical tasks:
+
+1. **Dynamic Trajectory Control (Policy-Driven):** The learned policy optimizes energy-efficient paths across the target deployment area.
+2. **Resource Allocation (Policy-Driven):** The learned policy dynamically sets the Spreading Factor (SF) and Transmission Power (TP) for every associated node to maximize global energy efficiency.
+3. **Device Association (Channel-Aware Heuristic):** A localized association scheme that maps the link connections between ground LoRa End Devices (EDs) and in-range UAV gateways based on the current channel gains.
 
 The system is trained using a custom OpenAI Gym environment and validated via a live, closed-loop co-simulation connected to a packet-level **OMNeT++ / INET / FLoRa** network simulator.
-
 
 ---
 
