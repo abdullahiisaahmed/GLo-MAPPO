@@ -1,10 +1,15 @@
+
 # GLo-MAPPO: Multi-Agent Deep Reinforcement Learning for Energy-Efficient UAV-Assisted LoRa Networks
 
-Reference implementation for the paper:
+This repository provides the reference implementation for **GLo-MAPPO**, a framework that utilizes Multi-Agent Proximal Policy Optimization (MAPPO) to optimize network topology and energy efficiency in UAV-assisted LoRa networks. 
 
-> **GLo-MAPPO: Multi-Agent Deep Reinforcement Learning for Energy-Efficient UAV-Assisted LoRa Networks.**
+The GLo-MAPPO policy coordinates a team of UAV gateways to simultaneously manage three critical tasks:
+1. **Dynamic Trajectory Control:** Flying energy-efficient paths across the target deployment area.
+2. **Device Association:** Optimizing the link connections between ground LoRa End Devices (EDs) and in-range UAV gateways.
+3. **Resource Allocation:** Dynamically setting the Spreading Factor (SF) and Transmission Power (TP) for every served node to maximize global energy efficiency.
 
-GLo-MAPPO trains a team of UAV gateways to (i) fly energy-efficient trajectories, (ii) associate ground LoRa end devices, and (iii) set each served device's **spreading factor (SF)** and **transmission power (TP)**, maximizing network energy efficiency. The policy is trained with **MAPPO** (multi-agent PPO) and validated in closed loop against a packet-level **FLoRa / OMNeT++** LoRa simulator.
+The system is trained using a custom OpenAI Gym environment and validated via a live, closed-loop co-simulation connected to a packet-level **OMNeT++ / INET / FLoRa** network simulator.
+
 
 ---
 
@@ -12,24 +17,28 @@ GLo-MAPPO trains a team of UAV gateways to (i) fly energy-efficient trajectories
 
 ```
 GLo_MAPPO/
-├── src/                     # MAPPO / EPyMARL training + evaluation code
-│   ├── main.py              #   training entry point (Sacred)
+├── src/                     # MAPPO / EPyMARL training + evaluation
+│   ├── main.py              #   training entry point (configured with Sacred)
 │   ├── config/              #   algorithm + env YAML configs (mappo.yaml, envs/gymma.yaml, ...)
 │   └── envs/MADE/gym_mdde1/ #   the custom LoRa gym environment (MultiFlyingLoRaEnv)
-├── models/                  # pretrained GLo-MAPPO policy (agent.th)  — see models/README.md
+├── models/                  # pretrained GLo-MAPPO policy (agent.th) 
 ├── flora_run/               # closed-loop co-simulation bridge (policy server + env socket)
 │   ├── policy_server.py     #   Terminal A: serves the trained policy on :6000
-│   ├── env_socket.py        #   Terminal B: env sidecar; injects FLoRa's channel, relays obs<->action
+│   ├── env_socket.py        #   Terminal B: env socket managing observations/actions
 │   ├── run_python_eval_logged.py    # standalone eval (no FLoRa)
-│   └── report_cosim_comparison.py   # builds the standalone-vs-tier validation table
-├── flora-stack/             # FLoRa/OMNeT++ simulator overlay + build — see flora-stack/README.md
-├── assets/                  # figures for this README (drop your screenshot here)
+│   └── report_cosim_comparison.py   # builds the standalone-vs-tier validation
+├── flora-stack/             # FLoRa/OMNeT++ simulator engine 
+├── assets/                  # figures for this README
 ├── requirements.txt         # pinned Python dependencies
-├── install_flora_stack.sh   # one-shot fetch + build of OMNeT++/INET/FLoRa
-├── LICENSE  /  NOTICE       # Apache-2.0 (this code derives from EPyMARL/PyMARL)
-└── README.md                # you are here
+├── install_flora_stack.sh   # one-shot compilation script for OMNeT++/INET/FLoRa
+├── LICENSE  /  NOTICE       # Apache-2.0 open-source infrastructure licenses
+├── glo_env_policy.cmd       # closed-loop launcher — Terminal A: policy server on :6000
+├── glo_env_socket.cmd       # closed-loop launcher — Terminal B: env<->policy bridge :6000->:5000
+├── glo_env_flora.cmd        # launcher — opens FLoRa (Qtenv GUI / Cmdenv) on an .ini
+├── glo_env_omnetpp.cmd      # launcher — opens the OMNeT++ IDE (loads GCC/Qt5 + Java)
+└── README.md             
 ```
-
+---
 
 ## Setup
 
@@ -53,6 +62,7 @@ Quick check:
 python -c "import torch, gym, gym_mdde1; print('env OK')"
 ```
 
+---
 
 ## Running Experiments
 
@@ -193,6 +203,7 @@ If you use this code in your research, kindly cite our work:
 ```bibtex
 Coming soon...!!!
 ```
+---
 
 ## Acknowledgements
 
