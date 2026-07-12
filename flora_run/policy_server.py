@@ -1,23 +1,5 @@
 #!/usr/bin/env python3
-"""
-Closed-loop POLICY server  (Terminal A — pure obs -> action, NO env).
 
-Holds ONLY the trained RNN actor + GRU hidden state. Terminal B (env_socket.py)
-builds the observation from FLoRa's measured channel and sends it here; this returns
-the greedy action. This is the "brain"; all world state lives in Terminal B.
-
-It reuses marl_core.py (default checkpoint path) and is the Terminal-A half of
-the closed-loop (Option 2) design.
-
-Protocol  (length-prefixed pickle over TCP; env_socket connects as the client):
-  hello {action_nvec:[...], n_agents:N}  -> ok {input_shape, n_actions, hidden_dim}
-  reset {}                               -> ok {}
-  step  {inputs:(n_agents,input_shape)f32, avail:(n_agents,n_actions)} -> action {actions:(n_agents,n_heads)}
-  close {}                               -> (closes)
-
-Run (Terminal A, conda env marl_lora):
-  python policy_server.py --ckpt /path/to/agent.th --port 6000
-"""
 import argparse
 import os
 import pickle
@@ -41,7 +23,7 @@ BASE = os.environ.get(
 )
 MULTI_LORA_PATH = os.path.join(BASE, "src/envs/MADE/gym_mdde1/envs/multi_lora.py")
 
-# GLo-MAPPO, 2 UAVs / 50 EDs, seed 41 -- final (~2M-step) checkpoint (shipped in models/)
+# GLo-MAPPO, 2 UAVs / 50 EDs, seed 41 
 CKPT_REL = "models/glo_ed50_seed41/agent.th"
 DEFAULT_CKPT = os.path.join(BASE, CKPT_REL)
 

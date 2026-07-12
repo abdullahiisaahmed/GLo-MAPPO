@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
-"""Pure-Python evaluation logger -- the *sim* side of the sim-vs-co-sim validation.
 
-Runs the SAME frozen GLo-MAPPO checkpoint that the closed loop serves
-(policy_server.DEFAULT_CKPT), over M episodes of MultiFlyingLoRaEnv (2 UAVs, 50 EDs).
-Because multi_lora.reset() regenerates the ED layout with a fixed seed (seed_value=41),
-the ED deployment is IDENTICAL to the closed-loop run -- no injection needed.
-
-Writes one `mode="python"` record per episode via episode_logger, using the exact same
-schema env_socket.py writes for `mode="closed_loop"`, so report_cosim_comparison.py can
-compare them directly.
-
-    conda activate marl_lora
-    python run_python_eval_logged.py --episodes 10
-"""
 import argparse
 import os
 import time

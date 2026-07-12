@@ -1,16 +1,3 @@
-#!/usr/bin/env python3
-"""
-MARL core for the FLoRa bridge -- shared policy/env building blocks.
-
-Provides the pieces reused across the bridge:
-    - _load_env_class / ENV_KWARGS / OBS_AGENT_ID : construct MultiFlyingLoRaEnv
-    - Actor + DEFAULT_CKPT                         : the trained MAPPO RNN actor
-    - MarlController : greedy, GRU-stateful policy driver over the env, used by
-      run_python_eval_logged.py for the standalone (pure-Python) evaluation path.
-
-The closed-loop path instead splits policy (policy_server.py) from env (env_socket.py);
-this module is imported by both to share the env construction and checkpoint constants.
-"""
 
 import os
 import importlib.util
@@ -19,22 +6,19 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# ----------------------------------------------------------------------------
-# Paths -- project root is the parent of flora_run/ (derived from this file's location,
-# so no absolute path is hard-coded). Override with env var TRAJECTORY_MAPPO_ROOT if needed.
-# ----------------------------------------------------------------------------
+
 BASE = os.environ.get(
     "TRAJECTORY_MAPPO_ROOT",
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 )
 MULTI_LORA_PATH = os.path.join(BASE, "src/envs/MADE/gym_mdde1/envs/multi_lora.py")
-# GLo-MAPPO, 2 UAVs / 50 EDs, seed 41 -- final (~2M-step) checkpoint.
-# Shipped with the repo (see models/README.md), so inference matches the reported results.
+
+# GLo-MAPPO, 2 UAVs / 50 EDs, seed 41 -- final checkpoint.
 CKPT_REL = "models/glo_ed50_seed41/agent.th"
 DEFAULT_CKPT = os.path.join(BASE, CKPT_REL)
 
 
-# Env construction args — must match the training config (sacred run 1).
+# Env construction args
 ENV_KWARGS = dict(
     num_uavs=2,
     num_eds=50,
@@ -52,7 +36,7 @@ OBS_LAST_ACTION = False   # config.obs_last_action
 
 
 # ----------------------------------------------------------------------------
-# Load MultiFlyingLoRaEnv directly from file (no package import side effects)
+# Load MultiFlyingLoRaEnv directly from file
 # ----------------------------------------------------------------------------
 def _load_env_class(path=MULTI_LORA_PATH):
     spec = importlib.util.spec_from_file_location("multi_lora", path)

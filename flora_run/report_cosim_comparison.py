@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
-"""Channel-fidelity validation: GLo-MAPPO in the standalone (analytic) simulator vs the
-FLoRa closed loop at three channel tiers.
 
-Reads the per-episode JSON logs written by:
-  - run_python_eval_logged.py  -> mode="python"  (GLo-MAPPO standalone reference)
-  - env_socket.py --tier 1     -> mode="tier1"    (analytic A2G mean, deterministic)
-  - env_socket.py --tier 2     -> mode="tier2"    (analytic A2G + log-normal shadowing)
-  - env_socket.py --tier 3     -> mode="tier3"    (FLoRa native Oulu terrestrial model)
-(a plain closed-loop run with no --tier is tagged "closed_loop" and shown too, if present).
-
-Compares 3 validation metrics -- PDR, Energy Efficiency, Coverage -- each stressing a
-different subsystem (MAC/PHY reliability, energy, channel/geometry), and reports each
-tier's discrepancy vs the standalone reference. Emits a console table + CSV.
-
-    python report_cosim_comparison.py --logdir timing_logs
-"""
 import argparse
 import csv
 import glob

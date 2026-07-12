@@ -1,33 +1,5 @@
 #!/usr/bin/env python3
-"""
-Closed-loop ENV-SIDECAR bridge  (Terminal B = env + FLoRa).
 
-Terminal B owns the whole environment. Each control step it:
-  1. receives FLoRa's MEASURED per-(ED,UAV) RSSI/SNR,
-  2. converts RSSI -> linear channel gain and injects it (env.set_measured_gain),
-  3. rebuilds the SAME observation the policy trained on (env.get_obs),
-  4. relays obs+avail to the pure policy in Terminal A (policy_server.py),
-  5. gets the action, steps the env (UAV move + per-ED SF/TP + association),
-  6. returns {UAV xy, SF/TP/assoc} to FLoRa.
-
-So the policy reacts to FLoRa's REAL channel. It reuses marl_core.py for the
-env class + kwargs.
-
-WIRE PROTOCOL  FLoRa <-> env_socket  (little-endian, no padding):
-  Request (FLoRa->B):  <iiiid>  +  (n_eds * n_uavs) * <ddi>
-     header: int32 magic, int32 msg_type(0 STEP/1 RESET/2 CLOSE), int32 ep,
-             int32 step, double sim_time
-     per (ed, uav)  [ed-major, uav-minor]:  double gain_db, double snr_db, int32 fresh
-        gain_db = channel gain ED->UAV in dB = -path_loss (Tier-1 A2G mean / Tier-2 A2G+shadowing / Tier-3 Oulu)
-        fresh=1 -> use this measurement;  fresh=0 -> bridge falls back to last-known/model
-  Response (B->FLoRa):  <iiii>  +  n_uavs*<dd>  +  n_eds*<iii>   (same as marl_server.py)
-
-B is a CLIENT to policy_server.py (pickle framing). Run order: start policy_server
-(Terminal A) first, then this + FLoRa (Terminal B).
-
-Run (Terminal B, conda env marl_lora):
-  python env_socket.py --policy-host 127.0.0.1 --policy-port 6000 --host 127.0.0.1 --port 5000
-"""
 import argparse
 import json
 import os
@@ -43,12 +15,12 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from marl_core import _load_env_class, ENV_KWARGS, OBS_AGENT_ID
 import policy_server as P   # reuse send_msg / recv_msg / recv_exact framing
-import episode_logger       # shared per-episode JSON logger (same schema as the python run)
+import episode_logger       # shared per-episode JSON logger
 
 MAGIC = 0x4D41524C
 MSG_STEP, MSG_RESET, MSG_CLOSE = 0, 1, 2
 REQ_HDR_FMT = "<iiiid"
-REQ_HDR_SIZE = struct.calcsize(REQ_HDR_FMT)        # 24
+REQ_HDR_SIZE = struct.calcsize(REQ_HDR_FMT)       
 
 
 def recv_exact(conn, n):

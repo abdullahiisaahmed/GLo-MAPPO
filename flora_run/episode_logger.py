@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""Per-episode logger shared by the FLoRa closed-loop bridge (env_socket.py) and the
-pure-Python driver, so the two runs use an IDENTICAL JSON schema and are directly
-comparable. One JSON file per episode; summarize with report_cosim_comparison.py.
 
-Records, per episode:
-  - timing_ms       : per-step summaries (mean/std/p50/p95/min/max/n) for each phase
-  - mission         : steps_to_complete, mission_time_s, per-UAV arrival step/time, etc.
-  - episode_quality : coverage, PDR, EE, datarate, propulsion, collisions, duty-cycle
-"""
 import csv
 import datetime
 import json
