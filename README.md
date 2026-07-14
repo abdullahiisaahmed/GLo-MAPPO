@@ -40,6 +40,7 @@ GLo_MAPPO/
 │   └── report_cosim_comparison.py   # builds the standalone-vs-tier validation
 ├── flora-stack/             # FLoRa/OMNeT++ simulator engine 
 ├── assets/                  # figures for this README
+├── supplementary/           # extra paper figures such as duty-cycle, trajectories, collisions
 ├── requirements.txt         # pinned Python dependencies
 ├── install_flora_stack.sh   # one-shot compilation script for OMNeT++/INET/FLoRa
 ├── LICENSE  /  NOTICE       # Apache-2.0 open-source infrastructure licenses
