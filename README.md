@@ -153,7 +153,6 @@ python main.py --config=qmix --env-config=gymma with \
 
 ---
 
-
 ## Closed-Loop Co-Simulation (OMNeT++/INET/FLoRa)
 
 The trained GLo-MAPPO policy drives **two UAV gateways** in real time inside a packet-level LoRa network simulator. At every $t$, FLoRa measures the channel states, the Python policy output the next actions (UAV movements and per-node SF/TP configurations), and FLoRa applies them dynamically. This co-simulation is evaluated across three channel tiers:
@@ -179,7 +178,6 @@ Fetch and build the core simulation suite (OMNeT++ 6.0.3, INET 4.4.1, and FLoRa 
 ```bash
 bash install_flora_stack.sh all
 ```
-
 
 #### Step 2: Execute the Three-Terminal Closed Loop
 Open three separate terminal windows on the same host and start the processes in strict order: Terminal A → Terminal B → Terminal C.
@@ -208,12 +206,34 @@ cd flora-stack/flora/simulations
 
 ---
 
+## Extension: Hybrid Action Space
+
+In the latest version of this work, we extended our proposed GLo-MAPPO approach to support a hybrid action space combining discrete and continuous actions, with corresponding modifications to both the simulation environment and learning architecture. Specifically, the actor contains separate continuous and discrete output heads. The continuous head parameterizes Gaussian distributions for UAV movement direction and speed, while the discrete head produces categorical distributions for spreading factor (SF) and transmission power (TP) selections. 
+
+The figure below compares the energy efficiency of **GLo-MAPPO (Discrete)**, where all four action components are discrete, with **GLo-MAPPO (Mixed)**, where UAV movement direction and speed are continuous while SF and TP remain discrete. Across the evaluated scenarios, ranging from 10 to 70 active end devices (EDs), the hybrid approach achieves higher energy efficiency than the fully discrete approach.
+
+<p align="center">
+  <img src="hybrid-action-space/BarChart_EE_Discrete_vs_Mixed_action_space.png"
+       alt="GLo-MAPPO hybrid action space"
+       width="600">
+</p>
+
+**NB:** The full implementation of the hybrid action-space extension will be released soon.
+
+---
+
 ## Citation
 
 If you use this code in your research, kindly cite our work:
 
 ```bibtex
-Coming soon...!!!
+@article{ahmed2026glo,
+  title={GLo-MAPPO: Multi-Agent Deep Reinforcement Learning for Energy-Efficient UAV-Assisted LoRa Networks},
+  author={Ahmed, Abdullahi Isa and Bentahar, Jamal and Amhoud, El Mehdi},
+  journal={IEEE Transactions on Vehicular Technology},
+  year={2026},
+  publisher={IEEE}
+}
 ```
 ---
 
